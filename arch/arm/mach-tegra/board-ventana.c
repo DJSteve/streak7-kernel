@@ -935,6 +935,7 @@ static int __init ventana_touch_init_atmel(void)
 	gpio_set_value(TEGRA_GPIO_PQ7, 1);
 	msleep(100);
 
+
 	i2c_register_board_info(0, i2c_info, 1);
 
 	return 0;

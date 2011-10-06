@@ -27,7 +27,7 @@
 #include <linux/device.h>
 #include <mach/powergate.h>
 #include <mach/clk.h>
-#include <nvhost_syncpt.h>
+#include </adam/streak7/HC-kern/drivers/video/tegra/host/nvhost_syncpt.h>
 
 #include "dev.h"
 

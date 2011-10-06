@@ -26,7 +26,7 @@
 #include <linux/bitops.h>
 #include <linux/mmc/card.h>
 #include <linux/slab.h>
-#include "../../../../kernel/fs/partitions/check.h"
+#include "/adam/streak7/HC-kern/fs/partitions/check.h"
 
 #include <mach/sdhci.h>
 
