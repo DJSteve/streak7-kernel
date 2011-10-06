@@ -93,6 +93,10 @@ config TEGRA_SPI_SLAVE
        help
          SPI slave driver for NVIDIA Tegra SoCs
 
+config TEGRA_OC
+  bool "Enable 1.2Ghz Overclock"
+  default n
+
 config TEGRA_PWM
 	tristate "Enable PWM driver"
 	select HAVE_PWM
