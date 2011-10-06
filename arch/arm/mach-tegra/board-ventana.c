@@ -1266,7 +1266,7 @@ void __init tegra_ventana_reserve(void)
 	tegra_reserve(SZ_128M, SZ_2M, SZ_2M);
 }
 
-MACHINE_START(VENTANA, "ventana")
+MACHINE_START(VENTANA, "Streak7")
 	.boot_params    = 0x00000100,
 	.phys_io        = IO_APB_PHYS,
 	.io_pg_offst    = ((IO_APB_VIRT) >> 18) & 0xfffc,
