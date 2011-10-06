@@ -1,0 +1,51 @@
+#
+# Multiplexer I2C chip drivers configuration
+#
+
+menu "Multiplexer I2C Chip support"
+	depends on I2C_MUX
+
+config I2C_MUX_PCA954x
+	tristate "Philips PCA954x I2C Mux/switches"
+	depends on EXPERIMENTAL
+	help
+	  If you say yes here you get support for the Philips PCA954x
+	  I2C mux/switch devices.
+
+	  This driver can also be built as a module.  If so, the module
+	  will be called pca954x.
+
+config GSENSOR_BOSCH_BMA150
+	tristate "Bosch BMA150 accelerometer with using I2C interface"
+	default y
+	help
+	  Say Y here if you want support for the BMA150 accelerometer
+	  device.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called gsensor-bosch-bma150.
+
+config ECOMPASS_AKM_AK8973S
+	tristate "AKM AK8973S geomagnetism detection with using I2C interface"
+	default y
+	help
+	  Say Y here if you want support for the  AK8973S geomagnetism
+	  detection device.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called ecompass-akm-ak8973s.
+
+config LUNA_LSENSOR
+	bool "Luna light sensor"
+	depends on ARCH_TEGRA
+	default y
+	help
+	  Luna Light Sensor
+config LUNA_VIBRATOR
+	boolean "Luna Vibrator"
+	depends on ARCH_TEGRA && ANDROID_TIMED_OUTPUT
+	default y
+	help
+	  Luna Vibrator
+
+endmenu

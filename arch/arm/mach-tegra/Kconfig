@@ -1,0 +1,186 @@
+if ARCH_TEGRA
+
+comment "NVIDIA Tegra options"
+
+config WLAN_ALLOC_STATIC_MEM
+	bool "Wlan Driver allocate bootmem"
+	default y
+	help 
+		wlan driver use alloc_bootmem memory for size then 2 pages
+
+choice
+	prompt "Select Tegra processor family for target system"
+
+config ARCH_TEGRA_2x_SOC
+	bool "Tegra 2 family"
+	select CPU_V7
+	select ARM_GIC
+	select ARCH_REQUIRE_GPIOLIB
+	select ARM_ERRATA_742230
+	select USB_ARCH_HAS_EHCI if USB_SUPPORT
+	select USB_ULPI if USB_SUPPORT
+	select USB_ULPI_VIEWPORT if USB_SUPPORT
+	select DISABLE_3D_POWERGATING
+	help
+	  Support for NVIDIA Tegra AP20 and T20 processors, based on the
+	  ARM CortexA9MP CPU and the ARM PL310 L2 cache controller
+
+endchoice
+
+comment "Tegra board type"
+
+config MACH_HARMONY
+       bool "Harmony board"
+       help
+         Support for NVIDIA Harmony development platform
+
+config MACH_VENTANA
+       bool "Ventana board"
+       help
+         Support for NVIDIA Ventana development platform
+
+config MACH_WHISTLER
+       bool "Whistler board"
+       help
+         Support for NVIDIA Whistler development platform
+
+choice
+        prompt "Low-level debug console UART"
+        default TEGRA_DEBUG_UART_NONE
+
+config TEGRA_DEBUG_UART_NONE
+        bool "None"
+
+config TEGRA_DEBUG_UARTA
+        bool "UART-A"
+
+config TEGRA_DEBUG_UARTB
+        bool "UART-B"
+
+config TEGRA_DEBUG_UARTC
+        bool "UART-C"
+
+config TEGRA_DEBUG_UARTD
+        bool "UART-D"
+
+config TEGRA_DEBUG_UARTE
+        bool "UART-E"
+
+endchoice
+
+choice
+	prompt "Kernel Build Revision"
+	default BUILDTYPE_SHIP
+
+	config BUILDTYPE_RELEASE
+		bool "RELEASE"
+
+	config BUILDTYPE_SHIP
+		bool "SHIP"
+endchoice
+
+config TEGRA_SYSTEM_DMA
+	bool "Enable system DMA driver for NVIDIA Tegra SoCs"
+	default y
+	help
+	  Adds system DMA functionality for NVIDIA Tegra SoCs, used by
+	  several Tegra device drivers
+
+config TEGRA_SPI_SLAVE
+       tristate "Nvidia Tegra SPI slave driver"
+       depends on ARCH_TEGRA
+       select TEGRA_SYSTEM_DMA
+       help
+         SPI slave driver for NVIDIA Tegra SoCs
+
+config TEGRA_PWM
+	tristate "Enable PWM driver"
+	select HAVE_PWM
+	help
+	  Enable support for the Tegra PWM controller(s).
+
+config TEGRA_FIQ_DEBUGGER
+	bool "Enable the FIQ serial debugger on Tegra"
+	default y
+	select FIQ_DEBUGGER
+	help
+	  Enables the FIQ serial debugger on Tegra"
+
+source "arch/arm/mach-tegra/nv/Kconfig"
+
+endif
+
+config TEGRA_EMC_SCALING_ENABLE
+	bool "Enable scaling the memory frequency"
+	default n
+
+config TEGRA_CPU_DVFS
+	bool "Enable voltage scaling on Tegra CPU"
+	default y
+
+config TEGRA_CORE_DVFS
+	bool "Enable voltage scaling on Tegra core"
+	depends on TEGRA_CPU_DVFS
+	default y
+
+config TEGRA_IOVMM_GART
+	bool "Enable I/O virtual memory manager for GART"
+	depends on ARCH_TEGRA_2x_SOC
+	default y
+	select TEGRA_IOVMM
+	help
+	  Enables support for remapping discontiguous physical memory
+	  shared with the operating system into contiguous I/O virtual
+	  space through the GART hardware included on Tegra SoCs
+
+config TEGRA_IOVMM
+	bool
+
+config TEGRA_ARB_SEMAPHORE
+	bool
+
+config TEGRA_THERMAL_THROTTLE
+       bool "Enable throttling of CPU speed on overtemp"
+       depends on CPU_FREQ
+       default y
+       help
+         Also requires enabling a temperature sensor such as NCT1008.
+
+config TEGRA_CLOCK_DEBUG_WRITE
+	bool "Enable debugfs write access to clock tree"
+	depends on DEBUG_FS
+	default n
+config POWER_MANAGEMENT_LOG
+	bool "System power management state logging"
+	default y
+	help
+	  Enable power management mechanism.
+
+config TEGRA_MC_PROFILE
+	tristate "Enable profiling memory controller utilization"
+	default n
+	help
+	  When enabled, provides a mechanism to perform statistical
+	  sampling of the memory controller usage on a client-by-client
+	  basis, and report the log through sysfs.
+
+
+config DISABLE_3D_POWERGATING
+	bool "Disable 3D power gate"
+	depends on ARCH_TEGRA_2x_SOC
+	help
+	  This is for silicon errata of 3D power gating. By setting this
+	  config, 3D power will never be gated.
+
+config TEGRA_STAT_MON
+	bool "Enable H/W statistics monitor"
+	depends on ARCH_TEGRA_2x_SOC
+	default n
+	help
+	  Enables support for hardware statistics monitor for AVP.
+
+config ALLOC_MEMORY_EARLY_FOR_SDCARD_DETECTION
+	bool "allocate memory in sd card driver early for sdcard detection"
+	default y
+	help 
+		allocate memory in sd card driver early for sdcard detection

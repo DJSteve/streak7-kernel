@@ -1,0 +1,24 @@
+menuconfig SWITCH
+	tristate "Switch class support"
+	help
+	  Say Y here to enable switch class support. This allows
+	  monitoring switches by userspace via sysfs and uevent.
+
+if SWITCH
+
+config SWITCH_GPIO
+	tristate "GPIO Swith support"
+	depends on GENERIC_GPIO
+	help
+	  Say Y here to enable GPIO based switch support.
+
+config USIM_PLUG
+	tristate "USIM plug detection"
+	depends on GENERIC_GPIO
+	help
+	  Say Y here if you want to enable USIM plug detection.
+
+	  To compile the driver as a module, choose M here: the
+	  module will be called usimplug.
+
+endif # SWITCH
