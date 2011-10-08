@@ -218,8 +218,10 @@ static int tegra_update_cpu_speed(unsigned long rate)
 	 * Vote on memory bus frequency based on cpu frequency
 	 * This sets the minimum frequency, display or avp may request higher
 	 */
-	if (rate >= 816000)
-		clk_set_rate(emc_clk, 600000000); /* cpu 816 MHz, emc max */
+	if (rate >= 1000000)
+	        clk_set_rate(emc_clk, 800000000); /* cpu 1000 MHz, super max */
+	else if (rate >= 816000)
+		clk_set_rate(emc_clk, 666000000); /* cpu 816 MHz, emc max */
 	else if (rate >= 608000)
 		clk_set_rate(emc_clk, 300000000); /* cpu 608 MHz, emc 150Mhz */
 	else if (rate >= 456000)
@@ -331,6 +333,18 @@ static int tegra_cpu_init(struct cpufreq_policy *policy)
 
 	cpufreq_frequency_table_cpuinfo(policy, freq_table);
 	cpufreq_frequency_table_get_attr(freq_table, policy->cpu);
+
+	if (cpufreq_frequency_table_cpuinfo(policy, freq_table)) {
+#if defined(CONFIG_TEGRA_CPU_FREQ_SET_MIN_MAX)
+ 	    policy->cpuinfo.min_freq = CONFIG_TEGRA_CPU_FREQ_MIN;
+ 	    policy->cpuinfo.max_freq = CONFIG_TEGRA_CPU_FREQ_MAX;
+#endif
+ 	}
+
+#if defined(CONFIG_TEGRA_CPU_FREQ_SET_MIN_MAX)
+ 	    policy->min = CONFIG_TEGRA_CPU_FREQ_MIN;
+ 	    policy->max = CONFIG_TEGRA_CPU_FREQ_MAX;
+#endif
 	policy->cur = tegra_getspeed(policy->cpu);
 	target_cpu_speed[policy->cpu] = policy->cur;
 

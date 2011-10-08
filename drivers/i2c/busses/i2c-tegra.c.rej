@@ -1,0 +1,71 @@
+--- drivers/i2c/busses/i2c-tegra.c
++++ drivers/i2c/busses/i2c-tegra.c
+@@ -543,6 +546,7 @@
+ 	struct tegra_i2c_dev *i2c_dev = i2c_bus->dev;
+ 	u32 int_mask;
+ 	int ret;
++        int arb_stat;
+ 	int re_try_count;
+ 	int recovered_successfully = 0;
+ 
+@@ -617,52 +621,14 @@
+ 	if (likely(i2c_dev->msg_err == I2C_ERR_NONE))
+ 		return 0;
+ 
+-	/*nv - reset scl if arbitration lost*/
+-	if (i2c_dev->msg_err == I2C_ERR_ARBITRATION_LOST && i2c_bus->adapter.nr == 0) {
+-		tegra_gpio_enable(TEGRA_GPIO_PC4);
+-		gpio_request(TEGRA_GPIO_PC4,"gen1_scl_gpio");
+-		tegra_gpio_enable(TEGRA_GPIO_PC5);
+-		gpio_request(TEGRA_GPIO_PC5,"gen1_sda_gpio");
+-		gpio_direction_input(TEGRA_GPIO_PC5);
+-
+-		for (re_try_count = RETRY_MAX; re_try_count--;) {
+-			gpio_direction_output(TEGRA_GPIO_PC4,0);
+-			udelay(5);
+-			gpio_direction_output(TEGRA_GPIO_PC4,1);
+-			udelay(5);
+-
+-			/*chcek whether sda stuck low released*/
+-			if (gpio_get_value(TEGRA_GPIO_PC5)) {
+-				/*send START*/
+-				gpio_direction_output(TEGRA_GPIO_PC5,0);
+-				udelay(5);
+-
+-				/*and the STOP in the next clock cycle*/
+-				gpio_direction_output(TEGRA_GPIO_PC4,0);
+-				udelay(5);
+-				gpio_direction_output(TEGRA_GPIO_PC4,1);
+-				udelay(5);
+-				gpio_direction_output(TEGRA_GPIO_PC5,1);
+-				udelay(5);
+-
+-				recovered_successfully = 1;
+-				break;
+-			}
+-		}
+-
+-		gpio_free(TEGRA_GPIO_PC4);
+-		tegra_gpio_disable(TEGRA_GPIO_PC4);
+-		gpio_free(TEGRA_GPIO_PC5);
+-		tegra_gpio_disable(TEGRA_GPIO_PC5);
+-
+-		if (likely(recovered_successfully)) {
+-			pr_err("I2C arbitration lost recovered by re-try-count = %08x.\n", RETRY_MAX - re_try_count);
+-			return -EAGAIN;
+-		} else
+-			pr_err("Un-recovered I2C arbitration lost.\n");
+-	}
+-
+-
++	/* Arbitration Lost occurs, Start recovery */
++        if (i2c_dev->msg_err == I2C_ERR_ARBITRATION_LOST) {
++                if (i2c_dev->arb_recovery) {
++                        arb_stat = i2c_dev->arb_recovery(i2c_bus->scl_gpio, i2c_bus->sda_gpio);
++                        if (!arb_stat)
++                                return -EAGAIN;
++                }
++        }
+ 	tegra_i2c_init(i2c_dev);
+ 	if (i2c_dev->msg_err == I2C_ERR_NO_ACK) {
+ 		if (msg->flags & I2C_M_IGNORE_NAK)
