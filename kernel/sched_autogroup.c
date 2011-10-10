@@ -55,20 +55,6 @@ static inline struct autogroup *autogroup_task_get(struct task_struct *p)
 	return ag;
 }
 
-static inline struct autogroup *autogroup_task_get(struct task_struct *p)
-{
-	struct autogroup *ag;
-	unsigned long flags;
-
-	if (!lock_task_sighand(p, &flags))
-		return autogroup_kref_get(&autogroup_default);
-
-	ag = autogroup_kref_get(p->signal->autogroup);
-	unlock_task_sighand(p, &flags);
-
-	return ag;
-}
-
 static inline struct autogroup *autogroup_create(void)
 {
 	struct autogroup *ag = kzalloc(sizeof(*ag), GFP_KERNEL);
