@@ -140,10 +140,10 @@
 #define BUS_CLK_DIV_MASK		0x3
 
 #define PMC_CTRL			0x0
- #define PMC_CTRL_BLINK_ENB		(1 << 7)
+#define PMC_CTRL_BLINK_ENB		(1 << 7)
 
 #define PMC_DPD_PADS_ORIDE		0x1c
- #define PMC_DPD_PADS_ORIDE_BLINK_ENB	(1 << 20)
+#define PMC_DPD_PADS_ORIDE_BLINK_ENB	(1 << 20)
 
 #define PMC_BLINK_TIMER_DATA_ON_SHIFT	0
 #define PMC_BLINK_TIMER_DATA_ON_MASK	0x7fff
@@ -581,26 +581,26 @@ static struct clk_ops tegra_bus_ops = {
 
 static void tegra2_blink_clk_init(struct clk *c)
 {
-	u32 val;
+        u32 val;
 
-	val = pmc_readl(PMC_CTRL);
-	c->state = (val & PMC_CTRL_BLINK_ENB) ? ON : OFF;
-	c->mul = 1;
-	val = pmc_readl(c->reg);
+        val = pmc_readl(PMC_CTRL);
+        c->state = (val & PMC_CTRL_BLINK_ENB) ? ON : OFF;
+        c->mul = 1;
+        val = pmc_readl(c->reg);
 
-	if (val & PMC_BLINK_TIMER_ENB) {
-		unsigned int on_off;
+        if (val & PMC_BLINK_TIMER_ENB) {
+                 unsigned int on_off;
 
-		on_off = (val >> PMC_BLINK_TIMER_DATA_ON_SHIFT) &
-			PMC_BLINK_TIMER_DATA_ON_MASK;
-		val >>= PMC_BLINK_TIMER_DATA_OFF_SHIFT;
-		val &= PMC_BLINK_TIMER_DATA_OFF_MASK;
-		on_off += val;
-		/* each tick in the blink timer is 4 32KHz clocks */
-		c->div = on_off * 4;
-	} else {
-		c->div = 1;
-	}
+                on_off = (val >> PMC_BLINK_TIMER_DATA_ON_SHIFT) &
+                         PMC_BLINK_TIMER_DATA_ON_MASK;
+                val >>= PMC_BLINK_TIMER_DATA_OFF_SHIFT;
+                val &= PMC_BLINK_TIMER_DATA_OFF_MASK;
+                on_off += val;
+                /* each tick in the blink timer is 4 32KHz clocks */
+                c->div = on_off * 4;
+        } else {
+                c->div = 1;
+        }
 }
 
 static int tegra2_blink_clk_enable(struct clk *c)
@@ -1736,6 +1736,12 @@ static struct clk_pll_freq_table tegra_pll_x_freq_table[] = {
  	{ 19200000, 1704000000, 1065, 12, 1, 8},
  	{ 26000000, 1704000000, 852, 13, 1, 12},
 
+	/* 1.7 GHz */
+	{ 12000000, 1700000000, 800, 6, 1, 12},
+	{ 13000000, 1700000000, 985, 8, 1, 12},
+	{ 19200000, 1700000000, 1000, 12, 1, 8},
+	{ 26000000, 1700000000, 800, 13, 1, 12},
+
 	/* 1.680 GHz */
         { 12000000, 1680000000, 840, 6, 1, 12},
         { 13000000, 1680000000, 905, 7, 1, 12},
@@ -2562,28 +2568,22 @@ static struct cpufreq_frequency_table freq_table_1p7GHz[] = {
  	{ 5, 816000 },
  	{ 6, 912000 },
  	{ 7, 1000000 },
- 	{ 8, 1200000 },
-	{ 9, 1232000 },
-        { 10, 1336000 },
- 	{ 11, 1400000 },
-	{ 11, 1424000 },
-        { 12, 1472000 },
-	{ 13, 1504000 },
-	{ 14, 1544000 },
-        { 15, 1592000 },
-	{ 16, 1600000 },
-	{ 17, 1624000 },
-        { 18, 1680000 },
-	{ 19, 1700000 },
-	{ 20, 1704000 },
- 	{ 21, CPUFREQ_TABLE_END },
+	{ 8, 1232000 },
+        { 9, 1336000 },
+	{ 10, 1424000 },
+        { 11, 1504000 },
+	{ 12, 1592000 },
+	{ 13, 1600000 },
+	{ 14, 1680000 },
+	{ 15, 1704000 },
+ 	{ 16, CPUFREQ_TABLE_END },
  };
 
 static struct tegra_cpufreq_table_data cpufreq_tables[] = {
 	{ freq_table_750MHz, 1, 4 },
 	{ freq_table_1p0GHz, 2, 6 },
 	{ freq_table_1p2GHz, 2, 7 },
-	{ freq_table_1p7GHz, 2, 10 },
+	{ freq_table_1p7GHz, 2, 14 },
 };
 
 struct tegra_cpufreq_table_data *tegra_cpufreq_table_get(void)

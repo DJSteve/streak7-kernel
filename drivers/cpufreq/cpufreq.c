@@ -35,12 +35,12 @@
 						"cpufreq-core", msg)
 
 /* Initial implementation of userspace voltage control */
-#define FREQCOUNT 21
+#define FREQCOUNT 16
 #define CPUMVMAX 1450
-#define CPUMVMIN 725
-int cpufrequency[FREQCOUNT] = { 1704000, 1700000, 1680000, 1624000, 1600000, 1592000, 1544000, 1504000, 1472000, 1424000, 1400000, 1336000, 1232000, 1200000, 1000000, 912000, 816000, 760000, 608000, 456000, 312000, 216000 };
-int cpuvoltage[FREQCOUNT] = { 1450, 1450, 1450, 1450, 1450, 1425, 1375, 1375, 1300, 1275, 1275, 1250, 1175, 1150, 1100, 1050, 1025, 975, 950, 825, 800, 7251450, 1450, 1450, 1450, 1450, 1425, 1375, 1375, 1300, 1275, 1275, 1250, 1175, 1150, 1100, 1050, 1025, 975, 950, 825, 800, 725 };
-int cpuuvoffset[FREQCOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+#define CPUMVMIN 650
+int cpufrequency[FREQCOUNT] = { 1704000, 1680000, 1600000, 1592000, 1504000, 1424000, 1336000, 1232000, 1000000, 912000, 816000, 760000, 608000, 456000, 312000, 216000 };
+int cpuvoltage[FREQCOUNT] = { 1450, 1450, 1450, 1425, 1375, 1300, 1250, 1175, 1100, 1050, 1025, 975, 950, 825, 800, 725 };
+int cpuuvoffset[FREQCOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 /**
  * The "cpufreq driver" - the arch- or hardware-dependent low
@@ -709,7 +709,7 @@ static ssize_t store_UV_mV_table(struct cpufreq_policy *policy, char *buf, size_
 {
 	int tmptable[FREQCOUNT];
 	int i;
-	unsigned int ret = sscanf(buf, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &tmptable[0], &tmptable[1], &tmptable[2], &tmptable[3], &tmptable[4], &tmptable[5], &tmptable[6], &tmptable[7], &tmptable[8], &tmptable[9], &tmptable[10], &tmptable[11], &tmptable[12], &tmptable[13], &tmptable[14], &tmptable[15], &tmptable[16], &tmptable[17], &tmptable[18], &tmptable[19], &tmptable[20]);
+	unsigned int ret = sscanf(buf, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &tmptable[0], &tmptable[1], &tmptable[2], &tmptable[3], &tmptable[4], &tmptable[5], &tmptable[6], &tmptable[7], &tmptable[8], &tmptable[9], &tmptable[10], &tmptable[11], &tmptable[12], &tmptable[13], &tmptable[14], &tmptable[15] );
 	if (ret != FREQCOUNT)
 		return -EINVAL;
 	for (i = 0; i < FREQCOUNT; i++)

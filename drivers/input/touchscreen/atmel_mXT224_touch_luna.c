@@ -404,7 +404,7 @@ static void tp_save_multi_coord(void)
 	struct atmel_multipoints_t    *buf = g_tp->multi->buf;
     	uint8_t index_r = g_tp->multi->index_r;
     	uint8_t index_w = g_tp->multi->index_w;
-        int i; 
+        int i;
     	PRINT_IN
     	for( i = 0;i<ATMEL_REPORT_POINTS;i++)
 	{
@@ -415,8 +415,6 @@ static void tp_save_multi_coord(void)
 			buf[index_w].points[i].x = 0;
 			buf[index_w].points[i].y = 0;
 		}
-		
-		
 	}
 
 	index_w++;

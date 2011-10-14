@@ -10,8 +10,8 @@
 #define ATMEL_TOUCHSCREEN_KEYARRAY_DRIVER_NAME "mXT224_touchscreen_keyarray"
 #define NUM_OF_ID_INFO_BLOCK                     7 
 #define OBJECT_TABLE_ELEMENT_SIZE                6
-#define ATMEL_REPORT_POINTS     		 		 2
-#define ATMEL_MULTITOUCH_BUF_LEN                 20
+#define ATMEL_REPORT_POINTS     	         4
+#define ATMEL_MULTITOUCH_BUF_LEN                 60
 #define INFO_BLOCK_CHECKSUM_SIZE                 3
 #define CONFIG_CHECKSUM_SIZE                     4
 #define MAX_OBJ_ELEMENT_SIZE                     30

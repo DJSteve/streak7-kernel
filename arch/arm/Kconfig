@@ -1577,6 +1577,13 @@ config CMDLINE_FORCE
 
 	  If unsure, say N.
 
+config CMDLINE_PREPEND_STREAK7
+    string "Silly hack for custom params"
+    default y
+    help
+      International Atrix bootloader fails to pass proper mem= cmdline
+      So we hack it here.  Better have CONFIG_CMDLINE set to something!!
+
 config XIP_KERNEL
 	bool "Kernel Execute-In-Place from ROM"
 	depends on !ZBOOT_ROM
