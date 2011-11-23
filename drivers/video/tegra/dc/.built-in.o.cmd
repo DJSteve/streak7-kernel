@@ -1,0 +1,1 @@
+cmd_drivers/video/tegra/dc/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/video/tegra/dc/built-in.o drivers/video/tegra/dc/dc.o drivers/video/tegra/dc/rgb.o drivers/video/tegra/dc/hdmi.o drivers/video/tegra/dc/nvhdcp.o drivers/video/tegra/dc/edid.o drivers/video/tegra/dc/overlay.o 

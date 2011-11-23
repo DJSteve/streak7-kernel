@@ -1,0 +1,1 @@
+cmd_drivers/net/wireless/bcm4329/dhd.ko := arm-eabi-ld -EL -r  -T /adam/streak7/streak7-kernel/scripts/module-common.lds --build-id  -o drivers/net/wireless/bcm4329/dhd.ko drivers/net/wireless/bcm4329/dhd.o drivers/net/wireless/bcm4329/dhd.mod.o

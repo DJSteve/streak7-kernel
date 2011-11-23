@@ -1,0 +1,3 @@
+kernel/net/atm/atm.ko
+kernel/net/atm/clip.ko
+kernel/net/atm/pppoatm.ko

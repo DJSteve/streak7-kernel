@@ -1,0 +1,3 @@
+kernel/drivers/regulator/fixed.ko
+kernel/drivers/regulator/virtual.ko
+kernel/drivers/regulator/tps6586x-regulator.ko

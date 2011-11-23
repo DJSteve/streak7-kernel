@@ -1,0 +1,16 @@
+kernel/drivers/leds/led-class.ko
+kernel/drivers/leds/leds-bd2802.ko
+kernel/drivers/leds/leds-pca9532.ko
+kernel/drivers/leds/leds-gpio.ko
+kernel/drivers/leds/leds-lp3944.ko
+kernel/drivers/leds/leds-pca955x.ko
+kernel/drivers/leds/leds-pwm.ko
+kernel/drivers/leds/leds-regulator.ko
+kernel/drivers/leds/leds-lt3593.ko
+kernel/drivers/leds/leds-dac124s085.ko
+kernel/drivers/leds/ledtrig-timer.ko
+kernel/drivers/leds/ledtrig-heartbeat.ko
+kernel/drivers/leds/ledtrig-backlight.ko
+kernel/drivers/leds/ledtrig-gpio.ko
+kernel/drivers/leds/ledtrig-default-on.ko
+kernel/drivers/leds/ledtrig-sleep.ko

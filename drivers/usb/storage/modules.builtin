@@ -1,0 +1,2 @@
+kernel/drivers/usb/storage/usb-storage.ko
+kernel/drivers/usb/storage/usb-libusual.ko

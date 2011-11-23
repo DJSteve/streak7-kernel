@@ -1,0 +1,7 @@
+kernel/drivers/i2c/i2c-core.ko
+kernel/drivers/i2c/i2c-dev.ko
+kernel/drivers/i2c/i2c-mux.ko
+kernel/drivers/i2c/busses/i2c-tegra.ko
+kernel/drivers/i2c/muxes/pca954x.ko
+kernel/drivers/i2c/muxes/gsensor-bosch-bma150.ko
+kernel/drivers/i2c/muxes/ecompass-akm-ak8973s.ko

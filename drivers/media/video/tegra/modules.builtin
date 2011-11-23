@@ -1,0 +1,5 @@
+kernel/drivers/media/video/tegra/ov5642.ko
+kernel/drivers/media/video/tegra/ov5642_comm.ko
+kernel/drivers/media/video/tegra/ov5642_iq.ko
+kernel/drivers/media/video/tegra/ov9665.ko
+kernel/drivers/media/video/tegra/aptina1040.ko

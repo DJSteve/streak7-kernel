@@ -1,0 +1,1 @@
+cmd_drivers/video/tegra/nvmap/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/video/tegra/nvmap/built-in.o drivers/video/tegra/nvmap/nvmap.o drivers/video/tegra/nvmap/nvmap_dev.o drivers/video/tegra/nvmap/nvmap_handle.o drivers/video/tegra/nvmap/nvmap_heap.o drivers/video/tegra/nvmap/nvmap_ioctl.o drivers/video/tegra/nvmap/nvmap_mru.o 

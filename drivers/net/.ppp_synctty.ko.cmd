@@ -1,0 +1,1 @@
+cmd_drivers/net/ppp_synctty.ko := arm-eabi-ld -EL -r  -T /adam/streak7/streak7-kernel/scripts/module-common.lds --build-id  -o drivers/net/ppp_synctty.ko drivers/net/ppp_synctty.o drivers/net/ppp_synctty.mod.o

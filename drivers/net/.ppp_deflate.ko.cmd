@@ -1,0 +1,1 @@
+cmd_drivers/net/ppp_deflate.ko := arm-eabi-ld -EL -r  -T /adam/streak7/streak7-kernel/scripts/module-common.lds --build-id  -o drivers/net/ppp_deflate.ko drivers/net/ppp_deflate.o drivers/net/ppp_deflate.mod.o

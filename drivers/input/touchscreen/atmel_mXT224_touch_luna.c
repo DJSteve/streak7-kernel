@@ -484,12 +484,15 @@ static void tp_report_coord_via_mt_protocol(void)
 		input_report_abs(g_tp->input, ABS_MT_POSITION_X, g_tp->msg[i].coord.x); 
 		input_report_abs(g_tp->input, ABS_MT_POSITION_Y, g_tp->msg[i].coord.y);	
 		input_report_abs(g_tp->input, ABS_MT_TRACKING_ID, i);
+		input_report_key(g_tp->input, BTN_TOUCH, 1);
 		MY_INFO_PRINTK( 1,"INFO_LEVEL:" "i %d : x %d y %d z %d w %d\n",i,g_tp->msg[i].coord.x,g_tp->msg[i].coord.y,g_tp->msg[i].z,g_tp->msg[i].w ); 
 
 		input_mt_sync(g_tp->input); 
 		
-		if (g_tp->msg[i].z == 0)
+		if (g_tp->msg[i].z == 0) {
 			g_tp->msg[i].z = -1;
+			input_report_key(g_tp->input, BTN_TOUCH, 0);
+		}
 	}
 	input_sync(g_tp->input);
 	

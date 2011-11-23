@@ -1,0 +1,2 @@
+kernel/drivers/input/keyboard/ATA2538_capkey.ko
+kernel/drivers/input/keyboard/tegra_keypad.ko

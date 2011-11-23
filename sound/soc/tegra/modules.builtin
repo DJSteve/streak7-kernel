@@ -1,0 +1,7 @@
+kernel/sound/soc/tegra/tegra_pcm.ko
+kernel/sound/soc/tegra/tegra_i2s.ko
+kernel/sound/soc/tegra/tegra_spdif.ko
+kernel/sound/soc/tegra/tegra_wired_jack.ko
+kernel/sound/soc/tegra/tegra_soc_controls.ko
+kernel/sound/soc/tegra/tegra_generic_codec.ko
+kernel/sound/soc/tegra/tegra_soc_wm8903.ko
