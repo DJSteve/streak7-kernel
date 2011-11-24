@@ -1,3 +1,0 @@
-kernel/drivers/misc/sensors_daemon.ko
-kernel/drivers/misc/current_driving.ko
-kernel/drivers/misc/nct1008.ko

@@ -1,3 +1,0 @@
-kernel/drivers/video/tegra/fb.ko
-kernel/drivers/video/tegra/dc/overlay.ko
-kernel/drivers/video/tegra/host/nvhost.ko

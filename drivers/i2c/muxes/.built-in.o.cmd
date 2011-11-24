@@ -1,1 +1,0 @@
-cmd_drivers/i2c/muxes/built-in.o :=  arm-eabi-ld -EL    -r -o drivers/i2c/muxes/built-in.o drivers/i2c/muxes/pca954x.o drivers/i2c/muxes/gsensor-bosch-bma150.o drivers/i2c/muxes/ecompass-akm-ak8973s.o drivers/i2c/muxes/luna_lsensor.o drivers/i2c/muxes/luna_vibrator.o 

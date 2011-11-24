@@ -472,8 +472,21 @@ static void save_multi_touch_struct(  uint16_t x_coord,uint16_t y_coord,uint8_t 
 }
 static void tp_report_coord_via_mt_protocol(void)
 {
-	int i;
+	int i,pts=0;
+
 	PRINT_IN
+
+	/*for(i=0;i<ATMEL_REPORT_POINTS; i++)
+	  if(g_tp->msg[i].z != -1)
+		pts++;
+	if(pts > 0)
+	{
+		input_report_key(g_tp->input, BTN_TOUCH, 1);
+	} else
+	{
+		input_report_key(g_tp->input, BTN_TOUCH, 0);
+	}*/
+
 	for(i=0;i<ATMEL_REPORT_POINTS;i++)
 	{
 		if (g_tp->msg[i].z == -1)
@@ -3376,8 +3389,12 @@ static int touchpad_register_input( struct input_dev **input,
     input_dev->open = touchpad_open;
     input_dev->close = touchpad_close;
     
-    
-    input_dev->evbit[0] = BIT_MASK(EV_KEY) | BIT_MASK(EV_ABS);
+    set_bit(BTN_TOUCH, input_dev->keybit);
+    __set_bit(EV_ABS, input_dev->evbit);
+    __set_bit(EV_SYN, input_dev->evbit);
+    __set_bit(EV_KEY, input_dev->evbit);
+
+//    input_dev->evbit[0] = BIT_MASK(EV_KEY) | BIT_MASK(EV_ABS);
     
     #if 0
     

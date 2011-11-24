@@ -1,2 +1,0 @@
-kernel/drivers/usb/otg/gpio_vbus.ko
-kernel/drivers/usb/otg/nop-usb-xceiv.ko
