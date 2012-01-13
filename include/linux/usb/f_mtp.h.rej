@@ -1,0 +1,19 @@
+--- include/linux/usb/f_mtp.h
++++ include/linux/usb/f_mtp.h
+@@ -43,6 +56,16 @@
+ 	loff_t  	offset;
+ 	/* number of bytes to transfer */
+ 	size_t		length;
++#if defined(CONFIG_ICS)
++	/* MTP command ID for data header,
++	 * used only for MTP_SEND_FILE_WITH_HEADER
++	 */
++	uint16_t  command;
++	/* MTP transaction ID for data header,
++	 * used only for MTP_SEND_FILE_WITH_HEADER
++	 */
++	uint32_t  transaction_id;
++#endif
+ };
+ 
+ struct mtp_event {

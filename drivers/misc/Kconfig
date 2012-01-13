@@ -487,4 +487,11 @@ source "drivers/misc/cb710/Kconfig"
 source "drivers/misc/iwmc3200top/Kconfig"
 source "drivers/misc/mpu3050/Kconfig"
 
+config ICS
+        bool "Add support for Ice Cream Sandwich"
+        default n
+        help
+          Say Y here to enable support for Ice Cream Sandwich.
+
+
 endif # MISC_DEVICES
