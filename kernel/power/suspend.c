@@ -24,7 +24,7 @@
 #include <linux/suspend.h>
 
 #include "power.h"
-#include </adam/streak7/HC-kern/arch/arm/mach-tegra/power.h>
+#include "../../arch/arm/mach-tegra/power.h"
 
 static u64 rtc_resume_fromtime,rtc_resume_endtime;
 ktime_t ktime_resume_fromtime,ktime_resume_endtime;	

@@ -22,6 +22,9 @@
 
 #include <linux/ioctl.h>
 #include <linux/file.h>
+#if defined(CONFIG_ICS)
+#include <linux/rbtree.h>
+#endif
 
 #if !defined(__KERNEL__)
 #define __user
@@ -35,6 +38,9 @@
 
 /* common carveout heaps */
 #define NVMAP_HEAP_CARVEOUT_IRAM    (1ul<<29)
+#if defined(CONFIG_ICS)
+#define NVMAP_HEAP_CARVEOUT_VPR     (1ul<<28)
+#endif
 #define NVMAP_HEAP_CARVEOUT_GENERIC (1ul<<0)
 
 #define NVMAP_HEAP_CARVEOUT_MASK    (NVMAP_HEAP_IOVMM - 1)
@@ -51,7 +57,9 @@
 
 #if defined(__KERNEL__)
 
+#if !defined(CONFIG_ICS)
 struct nvmap_handle_ref;
+#endif
 struct nvmap_handle;
 struct nvmap_client;
 struct nvmap_device;
@@ -64,7 +72,23 @@ struct nvmap_pinarray_elem {
 	__u32 patch_offset;
 	__u32 pin_mem;
 	__u32 pin_offset;
+#if defined(CONFIG_ICS)
+	__u32 reloc_shift;
+#endif
 };
+
+#if defined(CONFIG_ICS)
+/* handle_ref objects are client-local references to an nvmap_handle;
+ * they are distinct objects so that handles can be unpinned and
+ * unreferenced the correct number of times when a client abnormally
+ * terminates */
+struct nvmap_handle_ref {
+        struct nvmap_handle *handle;
+        struct rb_node  node;
+        atomic_t        dupes;  /* number of times to free on file close */
+        atomic_t        pin;    /* number of times to unpin on free */
+};
+#endif
 
 struct nvmap_client *nvmap_create_client(struct nvmap_device *dev,
 					 const char *name);
@@ -84,9 +108,15 @@ struct nvmap_client *nvmap_client_get(struct nvmap_client *client);
 
 void nvmap_client_put(struct nvmap_client *c);
 
+#if !defined(CONFIG_ICS)
 unsigned long nvmap_pin(struct nvmap_client *c, struct nvmap_handle_ref *r);
 
 unsigned long nvmap_handle_address(struct nvmap_client *c, unsigned long id);
+#else
+phys_addr_t nvmap_pin(struct nvmap_client *c, struct nvmap_handle_ref *r);
+
+phys_addr_t nvmap_handle_address(struct nvmap_client *c, unsigned long id);
+#endif
 
 void nvmap_unpin(struct nvmap_client *client, struct nvmap_handle_ref *r);
 
@@ -97,14 +127,24 @@ int nvmap_pin_array(struct nvmap_client *client, struct nvmap_handle *gather,
 void nvmap_unpin_handles(struct nvmap_client *client,
 			 struct nvmap_handle **h, int nr);
 
+#if !defined(CONFIG_ICS)
 int nvmap_patch_wait(struct nvmap_client *client,
 		     struct nvmap_handle *patch,
 		     u32 patch_offset, u32 patch_value);
+#else
+int nvmap_patch_word(struct nvmap_client *client,
+                     struct nvmap_handle *patch,
+                     u32 patch_offset, u32 patch_value);
+#endif
 
 struct nvmap_platform_carveout {
 	const char *name;
 	unsigned int usage_mask;
+#if defined(CONFIG_ICS)
+	phys_addr_t base;
+#else
 	unsigned long base;
+#endif
 	size_t size;
 	size_t buddy_size;
 };

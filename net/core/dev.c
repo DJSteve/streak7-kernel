@@ -5381,6 +5381,18 @@ struct rtnl_link_stats64 *dev_get_stats(struct net_device *dev,
 }
 EXPORT_SYMBOL(dev_get_stats);
 
+const struct net_device_stats *dev_get_stats2(struct net_device *dev)
+{
+        const struct net_device_ops *ops = dev->netdev_ops;
+
+        if (ops->ndo_get_stats)
+                return ops->ndo_get_stats(dev);
+
+        dev_txq_stats_fold(dev, &dev->stats);
+        return &dev->stats;
+}
+EXPORT_SYMBOL(dev_get_stats2);
+
 static void netdev_init_one_queue(struct net_device *dev,
 				  struct netdev_queue *queue,
 				  void *_unused)

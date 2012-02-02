@@ -43,7 +43,7 @@
 #include <mach/nvmap.h>
 #include <mach/legacy_irq.h>
 
-#include "../../../../video/tegra/nvmap/nvmap.h"
+#include "../../../../video/tegra-ics/nvmap/nvmap.h"
 
 #include "headavp.h"
 #include "avp_msg.h"
@@ -610,14 +610,15 @@ static int avp_node_try_connect(struct trpc_node *node,
 			goto err_msg_write;
 		}
 		ret = msg_wait_ack_locked(avp, CMD_RESPONSE, &rinfo->rem_id);
-		mutex_unlock(&avp->to_avp_lock);
+ 		mutex_unlock(&avp->to_avp_lock);
 		if (!ret && rinfo->rem_id)
 			break;
 
 		/* Skip the sleep function at last retry count */
 		if ((cnt + 1) < max_retry_cnt)
 			usleep_range(100, 2000);
-	}
+ 	}
+
 
 	if (ret) {
 		pr_err("%s: remote end won't respond for '%s'\n", __func__,

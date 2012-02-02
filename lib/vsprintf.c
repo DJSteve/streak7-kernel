@@ -120,147 +120,6 @@ long long simple_strtoll(const char *cp, char **endp, unsigned int base)
 }
 EXPORT_SYMBOL(simple_strtoll);
 
-/**
- * strict_strtoul - convert a string to an unsigned long strictly
- * @cp: The string to be converted
- * @base: The number base to use
- * @res: The converted result value
- *
- * strict_strtoul converts a string to an unsigned long only if the
- * string is really an unsigned long string, any string containing
- * any invalid char at the tail will be rejected and -EINVAL is returned,
- * only a newline char at the tail is acceptible because people generally
- * change a module parameter in the following way:
- *
- * 	echo 1024 > /sys/module/e1000/parameters/copybreak
- *
- * echo will append a newline to the tail.
- *
- * It returns 0 if conversion is successful and *res is set to the converted
- * value, otherwise it returns -EINVAL and *res is set to 0.
- *
- * simple_strtoul just ignores the successive invalid characters and
- * return the converted value of prefix part of the string.
- */
-int strict_strtoul(const char *cp, unsigned int base, unsigned long *res)
-{
-	char *tail;
-	unsigned long val;
-
-	*res = 0;
-	if (!*cp)
-		return -EINVAL;
-
-	val = simple_strtoul(cp, &tail, base);
-	if (tail == cp)
-		return -EINVAL;
-
-	if ((tail[0] == '\0') || (tail[0] == '\n' && tail[1] == '\0')) {
-		*res = val;
-		return 0;
-	}
-
-	return -EINVAL;
-}
-EXPORT_SYMBOL(strict_strtoul);
-
-/**
- * strict_strtol - convert a string to a long strictly
- * @cp: The string to be converted
- * @base: The number base to use
- * @res: The converted result value
- *
- * strict_strtol is similiar to strict_strtoul, but it allows the first
- * character of a string is '-'.
- *
- * It returns 0 if conversion is successful and *res is set to the converted
- * value, otherwise it returns -EINVAL and *res is set to 0.
- */
-int strict_strtol(const char *cp, unsigned int base, long *res)
-{
-	int ret;
-	if (*cp == '-') {
-		ret = strict_strtoul(cp + 1, base, (unsigned long *)res);
-		if (!ret)
-			*res = -(*res);
-	} else {
-		ret = strict_strtoul(cp, base, (unsigned long *)res);
-	}
-
-	return ret;
-}
-EXPORT_SYMBOL(strict_strtol);
-
-/**
- * strict_strtoull - convert a string to an unsigned long long strictly
- * @cp: The string to be converted
- * @base: The number base to use
- * @res: The converted result value
- *
- * strict_strtoull converts a string to an unsigned long long only if the
- * string is really an unsigned long long string, any string containing
- * any invalid char at the tail will be rejected and -EINVAL is returned,
- * only a newline char at the tail is acceptible because people generally
- * change a module parameter in the following way:
- *
- * 	echo 1024 > /sys/module/e1000/parameters/copybreak
- *
- * echo will append a newline to the tail of the string.
- *
- * It returns 0 if conversion is successful and *res is set to the converted
- * value, otherwise it returns -EINVAL and *res is set to 0.
- *
- * simple_strtoull just ignores the successive invalid characters and
- * return the converted value of prefix part of the string.
- */
-int strict_strtoull(const char *cp, unsigned int base, unsigned long long *res)
-{
-	char *tail;
-	unsigned long long val;
-
-	*res = 0;
-	if (!*cp)
-		return -EINVAL;
-
-	val = simple_strtoull(cp, &tail, base);
-	if (tail == cp)
-		return -EINVAL;
-	if ((tail[0] == '\0') || (tail[0] == '\n' && tail[1] == '\0')) {
-		*res = val;
-		return 0;
-	}
-
-	return -EINVAL;
-}
-EXPORT_SYMBOL(strict_strtoull);
-
-/**
- * strict_strtoll - convert a string to a long long strictly
- * @cp: The string to be converted
- * @base: The number base to use
- * @res: The converted result value
- *
- * strict_strtoll is similiar to strict_strtoull, but it allows the first
- * character of a string is '-'.
- *
- * It returns 0 if conversion is successful and *res is set to the converted
- * value, otherwise it returns -EINVAL and *res is set to 0.
- */
-int strict_strtoll(const char *cp, unsigned int base, long long *res)
-{
-	int ret;
-	if (*cp == '-') {
-		ret = strict_strtoull(cp + 1, base, (unsigned long long *)res);
-		if (!ret)
-			*res = -(*res);
-	} else {
-		ret = strict_strtoull(cp, base, (unsigned long long *)res);
-	}
-
-	return ret;
-}
-EXPORT_SYMBOL(strict_strtoll);
-
 static noinline_for_stack
 int skip_atoi(const char **s)
 {
@@ -974,11 +833,6 @@ char *uuid_string(char *buf, char *end, const u8 *addr,
  *             [0][1][2][3]-[4][5]-[6][7]-[8][9]-[10][11][12][13][14][15]
  *           little endian output byte order is:
  *             [3][2][1][0]-[5][4]-[7][6]-[8][9]-[10][11][12][13][14][15]
- * - 'V' For a struct va_format which contains a format string * and va_list *,
- *       call vsnprintf(->format, *->va_list).
- *       Implements a "recursive vsnprintf".
- *       Do not use this feature without some mechanism to verify the
- *       correctness of the format string and va_list arguments.
  *
  * Note: The difference between 'S' and 'F' is that on ia64 and ppc64
  * function pointers are really function descriptors, which contain a
@@ -1024,10 +878,6 @@ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
 		break;
 	case 'U':
 		return uuid_string(buf, end, ptr, spec, fmt);
-	case 'V':
-		return buf + vsnprintf(buf, end - buf,
-				       ((struct va_format *)ptr)->fmt,
-				       *(((struct va_format *)ptr)->va));
 	}
 	spec.flags |= SMALL;
 	if (spec.field_width == -1) {

@@ -15,6 +15,9 @@ obj-y                                   += powergate.o
 obj-y                                   += suspend.o
 obj-y                                   += fuse.o
 obj-y                                   += kfuse.o
+ifeq ($(CONFIG_ICS),y)
+obj-y                                   += csi.o
+endif
 ifeq ($(CONFIG_TEGRA_ALSA),y)
 obj-$(CONFIG_ARCH_TEGRA_2x_SOC)         += tegra2_i2s.o
 else
@@ -49,7 +52,12 @@ obj-$(CONFIG_ARCH_TEGRA_2x_SOC)         += headsmp-t2.o
 obj-$(CONFIG_TEGRA_SYSTEM_DMA)          += dma.o
 obj-$(CONFIG_CPU_FREQ)                  += cpu-tegra.o
 obj-$(CONFIG_CPU_IDLE)                  += cpuidle.o
+#obj-$(CONFIG_TEGRA_IOVMM)               += iovmm.o
+ifneq ($(CONFIG_ICS),y)
 obj-$(CONFIG_TEGRA_IOVMM)               += iovmm.o
+else
+obj-$(CONFIG_TEGRA_IOVMM)               += iovmm-ics.o
+endif
 obj-$(CONFIG_TEGRA_IOVMM_GART)          += iovmm-gart.o
 obj-$(CONFIG_TEGRA_MC_PROFILE)          += tegra2_mc.o
 obj-$(CONFIG_POWER_MANAGEMENT_LOG)      += pmlog.o
@@ -66,8 +74,8 @@ obj-${CONFIG_MACH_HARMONY}              += board-harmony-sdhci.o
 obj-${CONFIG_MACH_VENTANA}              += board-ventana.o
 obj-${CONFIG_MACH_VENTANA}              += board-ventana-pinmux.o
 obj-${CONFIG_MACH_VENTANA}              += board-ventana-sdhci.o
-obj-${CONFIG_MACH_VENTANA}              += board-ventana-power.o
 obj-${CONFIG_MACH_VENTANA}              += board-ventana-panel.o
+obj-${CONFIG_MACH_VENTANA}              += board-ventana-power.o
 obj-${CONFIG_MACH_VENTANA}              += board-ventana-jack.o
 obj-${CONFIG_MACH_VENTANA}              += board-ventana-sensors.o
 obj-${CONFIG_MACH_VENTANA}              += board-ventana-kbc.o
